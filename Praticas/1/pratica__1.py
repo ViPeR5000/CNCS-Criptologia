@@ -126,15 +126,6 @@ def executar_openssl():
         print(f"Ocorreu um erro ao tentar executar o OpenSSL: {e}")
     input("\nPrima ENTER para voltar ao menu...")
 
-def mostrar_creditos():
-    print("\n==========================================")
-    print("               CRÉDITOS")
-    print("==========================================")
-    print("Resolução da Aula Prática 1 de Criptologia")
-    print("Desenvolvido por: Rui Melo (ViPeR5000)")
-    print("GitHub:           https://github.com/viper5000")
-    print("==========================================")
-    input("\nPrima ENTER para voltar ao menu...")
 
 # ==========================================
 # MENU PRINCIPAL
@@ -150,7 +141,6 @@ def menu_principal():
         print("3. Cifra de Substituição (Tarefa 6)")
         print("4. One Time Pad - OTP (Tarefas 7 e 8)")
         print("5. Exploração do OpenSSL (Tarefa 10)")
-        print("6. Créditos")
         print("0. Sair")
         print("="*40)
         
@@ -166,8 +156,6 @@ def menu_principal():
             executar_otp()
         elif escolha == '5':
             executar_openssl()
-        elif escolha == '6':
-            mostrar_creditos()
         elif escolha == '0':
             print("\nA encerrar o programa. Continuação de bons estudos!\n")
             sys.exit()
