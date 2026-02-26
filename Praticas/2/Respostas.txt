@@ -1,0 +1,38 @@
+1. Cifra Simétrica Contínua: ChaCha20
+Nesta primeira parte, exploramos a cifra ChaCha20 usando a ferramenta OpenSSL.
+Q1: A ChaCha20 é uma modificação de uma cifra inicial chamada Salsa20.
+
+Q2: A chave de cifra aaaaaaaa... fornecida não é boa porque tem pouca entropia. É demasiado previsível e repetitiva.
+
+Q3 / Q4: Ao verificares o conteúdo do ficheiro cifrado (ciphertext.cc20), vais notar que não faz sentido nenhum. O texto cifrado parece ser bom, pois parece ter muita entropia (ou seja, parece completamente aleatório).
+
+Q5: Analisando as opções do comando OpenSSL fornecido:
+-K: Especifica que o valor incluído a seguir é a chave de cifra em hexadecimal.
+-out: Especifica que o valor incluído a seguir é o nome do ficheiro de saída.
+-in: Especifica que o valor incluído a seguir é o nome do ficheiro de entrada.
+-e: Especifica que se trata da operação de cifra.
+Q6 (Tarefa 3): Para decifrar o ficheiro que recebeste, o comando correto a utilizar seria a inversão da cifra, trocando o -e por -d (decrypt). Exemplo: openssl enc -chacha20 -d -K <chave> -in <ficheiro_recebido> -out decifrado.txt -iv <vetor_inicializacao>.
+Q7: Para decifrar com sucesso, sim, precisaste da chave (e do IV) que o teu colega usou.
+Q8: A palavra "simétrica" refere-se ao facto da mesma chave de cifra ser usada para cifrar e para decifrar.
+Q9: Sim, é verdade que a ChaCha20 é usada/suportada no OpenSSH. (Geralmente em conjunto com o MAC Poly1305).
+Q10: O tamanho máximo seguro para uma mensagem na ChaCha20 é 256GiB.
+Q11: RC4 significa Rivest Cipher 4 (ou Ron's Code 4).
+Q12: No passado, a RC4 era a única cifra suportada no protocolo Wired Equivalent Privacy (WEP).
+________________________________________
+2. Implementação de uma Cifra de Chave Simétrica Fraca
+Aqui, o objetivo é perceber como funciona uma cifra contínua "por debaixo do capô", usando um gerador de números pseudo-aleatórios e a operação XOR.
+Q13: Usando o gerador rand() nativo do C em sistemas Linux comuns, os números resultantes têm 31 bits (pois o valor máximo típico é $2^{31}-1$).
+Q14: A sequência gerada por ti e pelo teu colega é igual, porque a sequência depende apenas do valor inicial (seed) que foi definido como 123456789 para ambos.
+Q15 (Tarefa 6): Após fazeres o XOR dos bytes do ficheiro com o output do rand(), o conteúdo do ficheiro de saída parece conteúdo cifrado (ilegível).
+Q16 (Tarefa 7): Como a função de cifra é baseada num XOR (e a operação inversa do XOR é o próprio XOR), só tens de invocar a função da mesma forma: encrypt("ciphertext.txt", "plaintext-2.txt", 123456789);.
+________________________________________
+3. Maneabilidade (Malleability)
+A secção mais crítica: demonstrar que cifrar não é o mesmo que autenticar.
+Q17: Confiar apenas na encriptação para enviar "Enviar 2 euros para o Bob"? Hummm, o facto do formador estar a perguntar deixa-me desconfiado(a).... A cifra garante confidencialidade, mas não garante que a mensagem não possa ser adulterada.
+Q18 (Tarefa 9): Ao alterar um único byte num ficheiro cifrado com AES e tentar decifrar, não consegues ler a mensagem de maneira nenhuma. O bloco inteiro (16 bytes) fica completamente corrompido.
+Q19: Por causa dessa corrupção massiva, sim, neste caso poder-se-ia dizer que o recetor iria notar a alteração.
+Q20: A cifra AES é uma cifra de chave simétrica por blocos.
+Q21 / Q22 (Tarefas 10 e 11): Ao fazer a mesma alteração (mudar 1 byte) usando a ChaCha20, vais notar algo até meio assustador!. Apenas o caractere correspondente àquele byte é alterado no texto decifrado, o resto fica intacto. Isto significa que sim, pelos vistos, um atacante poderia mudar o texto-limpo sem o conhecer alterando apenas o criptograma.
+
+Q23: A maneabilidade (capacidade de manipular o texto cifrado de forma previsível) é classificada como 0 (muito má) para a integridade dos dados.
+Q24: Usarias uma cifra contínua num canal sujeito a escutas, mas garantidamente sem alteração de mensagens? Sim, sem problema. Se o canal não permite alterações (garante integridade), a cifra contínua cumpre perfeitamente o seu papel de dar confidencialidade.
