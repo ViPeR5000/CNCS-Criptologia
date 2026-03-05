@@ -1,0 +1,15 @@
+─$ python entropia.py texto.txt 
+--- Resultados para 'texto.txt' ---
+Tamanho do ficheiro: 9 bytes
+Entropia calculada:  0.7952
+Entropia máxima:     2.4082
+=================================================
+  RESULTADOS PARA A TABELA (Tamanho e Entropia)
+=================================================
+-e
+--- Analisando: texto.txt ---
+Tamanho no disco: 0 KB
+--- Resultados para 'texto.txt' ---
+Tamanho do ficheiro: 9 bytes
+Entropia calculada:  0.7952
+Entropia máxima:     2.4082
